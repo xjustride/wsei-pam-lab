@@ -1,37 +1,39 @@
 package pl.wsei.pam.lab01
 
 import android.os.Bundle
-import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.Switch
+import android.widget.TextView
+import android.widget.Toast
 import android.widget.Toolbar.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
+import androidx.core.view.plusAssign
 
 class MainActivity : AppCompatActivity() {
     lateinit var mLayout: LinearLayout
-    lateinit var mProgress: ProgressBar
+    lateinit var mTitle: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mLayout = findViewById(R.id.main)
+
+        mTitle = TextView(this)
+        mTitle.text = "Laboratorium 1"
+        mTitle.textSize = 24f
+        val params = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        params.setMargins(20, 20, 20, 20)
+        mTitle.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+        mTitle.layoutParams = params
+        mLayout.addView(mTitle)
+
         for (i in 1..6) {
-//            val linearLayout = LinearLayout(this)
-//            linearLayout.layoutParams = ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-//            linearLayout.orientation = LinearLayout.HORIZONTAL
             val checkBox = CheckBox(this)
             checkBox.text = "Zadanie ${i}"
             checkBox.isEnabled = false
             mLayout.addView(checkBox)
-//            linearLayout.addView(checkBox)
-//            linearLayout.addView(Switch(this))
-//            mLayout.addView(linearLayout)
         }
-        mProgress = ProgressBar(this, null, androidx.appcompat.R.attr.progressBarStyle, androidx.appcompat.R.style.Widget_AppCompat_ProgressBar_Horizontal)
-        mLayout.addView(mProgress)
-        mProgress.progress = 67
 
         if (
             task11(4, 6) in 0.666665..0.666667 &&
