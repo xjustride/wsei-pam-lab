@@ -1,22 +1,18 @@
 package pl.wsei.pam.lab01
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import android.widget.Toolbar.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
-import androidx.core.view.plusAssign
 
 class MainActivity : AppCompatActivity() {
     lateinit var mLayout: LinearLayout
     lateinit var mTitle: TextView
-    var boxes: MutableList<CheckBox> = mutableListOf()
-    var buttons: MutableList<Button> = mutableListOf()
+    var mBoxes: MutableList<CheckBox> = mutableListOf()
+    var mButtons: MutableList<Button> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,21 +32,21 @@ class MainActivity : AppCompatActivity() {
             checkBox.text = "Zadanie ${i}"
             checkBox.isEnabled = false
             mLayout.addView(checkBox)
-            boxes.add(checkBox)
+            mBoxes.add(checkBox)
         }
 
         if (
             task11(4, 6) in 0.666665..0.666667 &&
             task11(7, -6) in -1.1666667..-1.1666665
         ) {
-            boxes[0].isChecked = true
+            mBoxes[0].isChecked = true
         }
 
         if (
             task12(7U, 6U) == "7 + 6 = 13" &&
             task12(12U, 15U) == "12 + 15 = 27"
         ) {
-            boxes[1].isChecked = true
+            mBoxes[1].isChecked = true
         }
 
         if (
@@ -58,14 +54,14 @@ class MainActivity : AppCompatActivity() {
             !task13(-6.0, -1.0f) && task13(6.0, 9.1f) &&
             !task13(6.0, -1.0f) && task13(1.0, 1.1f)
         ) {
-            boxes[2].isChecked = true
+            mBoxes[2].isChecked = true
         }
 
         if (
             task14(-2, 5) == "-2 + 5 = 3" &&
             task14(-2, -5) == "-2 - 5 = -7"
         ) {
-            boxes[3].isChecked = true
+            mBoxes[3].isChecked = true
         }
         if (
             task15("DOBRY") == 4 &&
@@ -75,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             task15("NIEDOSTATECZNY") == 1 &&
             task15("XYZ") == -1
         ){
-            boxes[4].isChecked = true
+            mBoxes[4].isChecked = true
         }
         if (task16(
                     mapOf("A" to 2U, "B" to 4U, "C" to 3U),
@@ -92,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                     mapOf("A" to 1U, "B" to 2U, "C" to 4U)
                 ) == 7U
             ) {
-            boxes[5].isChecked = true
+            mBoxes[5].isChecked = true
         }
     }
 
