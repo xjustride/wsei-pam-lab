@@ -1,6 +1,7 @@
 package pl.wsei.pam.lab01
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
@@ -14,6 +15,8 @@ import androidx.core.view.plusAssign
 class MainActivity : AppCompatActivity() {
     lateinit var mLayout: LinearLayout
     lateinit var mTitle: TextView
+    var boxes: MutableList<CheckBox> = mutableListOf()
+    var buttons: MutableList<Button> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,32 +36,36 @@ class MainActivity : AppCompatActivity() {
             checkBox.text = "Zadanie ${i}"
             checkBox.isEnabled = false
             mLayout.addView(checkBox)
+            boxes.add(checkBox)
         }
 
         if (
             task11(4, 6) in 0.666665..0.666667 &&
             task11(7, -6) in -1.1666667..-1.1666665
         ) {
-            (mLayout.get(0) as? CheckBox)?.isChecked = true
+            boxes[0].isChecked = true
         }
+
         if (
             task12(7U, 6U) == "7 + 6 = 13" &&
             task12(12U, 15U) == "12 + 15 = 27"
         ) {
-            (mLayout.get(1) as? CheckBox)?.isChecked = true
+            boxes[1].isChecked = true
         }
+
         if (
             task13(0.0, 5.4f) && !task13(7.0, 5.4f) &&
             !task13(-6.0, -1.0f) && task13(6.0, 9.1f) &&
             !task13(6.0, -1.0f) && task13(1.0, 1.1f)
         ) {
-            (mLayout.get(2) as? CheckBox)?.isChecked = true
+            boxes[2].isChecked = true
         }
+
         if (
-            task14(-2, 5) == "-2 + 5 = -3" &&
+            task14(-2, 5) == "-2 + 5 = 3" &&
             task14(-2, -5) == "-2 - 5 = -7"
         ) {
-            (mLayout.get(3) as? CheckBox)?.isChecked = true
+            boxes[3].isChecked = true
         }
         if (
             task15("DOBRY") == 4 &&
@@ -68,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             task15("NIEDOSTATECZNY") == 1 &&
             task15("XYZ") == -1
         ){
-            (mLayout.get(4) as? CheckBox)?.isChecked = true
+            boxes[4].isChecked = true
         }
         if (task16(
                     mapOf("A" to 2U, "B" to 4U, "C" to 3U),
@@ -85,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                     mapOf("A" to 1U, "B" to 2U, "C" to 4U)
                 ) == 7U
             ) {
-            (mLayout.get(5) as? CheckBox)?.isChecked = true
+            boxes[5].isChecked = true
         }
     }
 
@@ -118,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     // Wskazówki:
     // Math.abs(a) - zwraca wartość bezwględną
     fun task14(a: Int, b: Int): String {
-        return ""
+       return ""
     }
 
     // Zdefiniuj funkcję zwracającą ocenę jako liczbę całkowitą na podstawie łańcucha z opisem słownym oceny.
