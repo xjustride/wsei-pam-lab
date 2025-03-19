@@ -9,13 +9,11 @@ import pl.wsei.pam.lab01.R
 import pl.wsei.pam.lab03.Lab03Activity
 import android.content.Intent
 
-
 class Lab02Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lab02)
 
-        // Pobranie przycisków i ustawienie wspólnego listenera
         val buttons = listOf(
             findViewById<Button>(R.id.btn_6x6),
             findViewById<Button>(R.id.btn_4x4),
@@ -31,19 +29,22 @@ class Lab02Activity : AppCompatActivity() {
     }
 
     private fun handleButtonClick(view: View) {
-        val tag: String? = view.tag as String?
+        val tag: String? = view.tag as? String
         val tokens = tag?.split(" ")
 
         if (tokens != null && tokens.size == 2) {
-            val rows = tokens[0].toInt()
-            val columns = tokens[1].toInt()
+            val rows = tokens[0].toIntOrNull()
+            val columns = tokens[1].toIntOrNull()
 
-            val intent = Intent(this, Lab03Activity::class.java)
-            intent.putExtra("size", intArrayOf(rows, columns)) // Przekazujemy tablicę z rozmiarem
-            startActivity(intent)
+            if (rows != null && columns != null) {
+                val intent = Intent(this, Lab03Activity::class.java)
+                intent.putExtra("size", intArrayOf(rows, columns))
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Błąd formatu rozmiaru planszy", Toast.LENGTH_SHORT).show()
+            }
         } else {
             Toast.makeText(this, "Błąd pobierania rozmiaru planszy", Toast.LENGTH_SHORT).show()
         }
     }
-
 }

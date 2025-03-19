@@ -1,52 +1,64 @@
+// File: app/src/main/java/pl/wsei/pam/lab03/Lab03Activity.kt
 package pl.wsei.pam.lab03
 
 import android.os.Bundle
-import android.view.Gravity
 import android.widget.GridLayout
-import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import pl.wsei.pam.lab01.R
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 class Lab03Activity : AppCompatActivity() {
+
     private lateinit var mBoard: GridLayout
-    private var rows = 4
-    private var columns = 4
+    private lateinit var mBoardModel: MemoryBoardView
+    private var rows: Int = 4
+    private var columns: Int = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lab03)
 
         mBoard = findViewById(R.id.mBoard)
-
-        // Pobranie rozmiaru planszy z intencji
         val size = intent.getIntArrayExtra("size") ?: intArrayOf(4, 4)
         rows = size[0]
         columns = size[1]
 
-        // Ustawienie liczby kolumn i wierszy
         mBoard.columnCount = columns
         mBoard.rowCount = rows
 
-        // Generowanie planszy
-        generateBoard()
-    }
+        mBoardModel = MemoryBoardView(mBoard, columns, rows)
+        if (savedInstanceState != null) {
+            val savedState = savedInstanceState.getIntArray("gameState")
+            savedState?.let { mBoardModel.setState(it) }
+        }
 
-    private fun generateBoard() {
-        for (row in 0 until rows) {
-            for (col in 0 until columns) {
-                val btn = ImageButton(this).also {
-                    it.tag = "${row}x${col}"
-                    val layoutParams = GridLayout.LayoutParams()
-                    it.setImageResource(R.drawable.baseline_audiotrack_24) // Brakujący obraz
-                    layoutParams.width = 0
-                    layoutParams.height = 0
-                    layoutParams.setGravity(Gravity.CENTER)
-                    layoutParams.columnSpec = GridLayout.spec(col, 1, 1f)
-                    layoutParams.rowSpec = GridLayout.spec(row, 1, 1f)
-                    it.layoutParams = layoutParams
-                    mBoard.addView(it)
+        mBoardModel.setOnGameChangeListener { event ->
+            when (event.state) {
+                GameStates.Matching -> {
+                    event.tiles.forEach { it.revealed = true }
+                }
+                GameStates.Match -> {
+                    event.tiles.forEach { it.revealed = true }
+                }
+                GameStates.NoMatch -> {
+                    event.tiles.forEach { it.revealed = true }
+                    Timer().schedule(2000) {
+                        runOnUiThread {
+                            event.tiles.forEach { it.revealed = false }
+                        }
+                    }
+                }
+                GameStates.Finished -> {
+                    Toast.makeText(this, "Game finished", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putIntArray("gameState", mBoardModel.getState())
     }
 }
