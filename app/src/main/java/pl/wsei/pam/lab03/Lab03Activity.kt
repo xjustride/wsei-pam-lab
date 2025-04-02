@@ -93,33 +93,12 @@ class Lab03Activity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.board_activity_menu, menu)
-        optionsMenuItemSound = menu.findItem(R.id.board_activity_sound)
         // Stan dźwięku jest już ustawiony w onCreate z savedInstanceState lub domyślnie
         updateSoundIcon() // Zaktualizuj ikonę na podstawie `isSoundEnabled`
         Log.d(TAG, "onCreateOptionsMenu finished. Sound enabled: $isSoundEnabled")
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.board_activity_sound -> {
-                isSoundEnabled = !isSoundEnabled // Odwróć stan dźwięku
-                updateSoundIcon() // Zaktualizuj ikonę
-                val message = if (isSoundEnabled) getString(R.string.sound_on_toast) else getString(R.string.sound_off_toast)
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                Log.d(TAG, "Sound option toggled. Sound enabled: $isSoundEnabled")
-                true // Zdarzenie obsłużone
-            }
-            R.id.board_activity_reset -> {
-                Log.d(TAG,"Reset option selected.")
-                resetGame() // Wywołaj reset gry
-                Toast.makeText(this, R.string.game_reset_toast, Toast.LENGTH_SHORT).show()
-                true // Zdarzenie obsłużone
-            }
-            // Dodaj obsługę innych elementów menu, jeśli istnieją
-            else -> super.onOptionsItemSelected(item) // Domyślna obsługa
-        }
-    }
 
     // Aktualizuje ikonę dźwięku w menu
     private fun updateSoundIcon() {
