@@ -1,50 +1,41 @@
 package pl.wsei.pam.lab02
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import pl.wsei.pam.lab01.R
 import pl.wsei.pam.lab03.Lab03Activity
-import android.content.Intent
 
 class Lab02Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lab02)
 
+        // Find all buttons and set the click listener
         val buttons = listOf(
-            findViewById<Button>(R.id.btn_6x6),
-            findViewById<Button>(R.id.btn_4x4),
-            findViewById<Button>(R.id.btn_4x3),
-            findViewById<Button>(R.id.btn_3x2)
+            findViewById<Button>(R.id.main_6_6_board),
+            findViewById<Button>(R.id.main_4_4_board),
+            findViewById<Button>(R.id.main_4_6_board),
+            findViewById<Button>(R.id.main_6_4_board)
         )
 
         buttons.forEach { button ->
-            button.setOnClickListener { view ->
-                handleButtonClick(view)
-            }
+            button.setOnClickListener { v -> onBoardSizeSelected(v) }
         }
     }
 
-    private fun handleButtonClick(view: View) {
-        val tag: String? = view.tag as? String
-        val tokens = tag?.split(" ")
+    private fun onBoardSizeSelected(v: View) {
+        val tag: String? = v.tag as String?
+        val tokens: List<String>? = tag?.split(" ")
+        val rows = tokens?.get(0)?.toInt() ?: 3
+        val columns = tokens?.get(1)?.toInt() ?: 3
 
-        if (tokens != null && tokens.size == 2) {
-            val rows = tokens[0].toIntOrNull()
-            val columns = tokens[1].toIntOrNull()
-
-            if (rows != null && columns != null) {
-                val intent = Intent(this, Lab03Activity::class.java)
-                intent.putExtra("size", intArrayOf(rows, columns))
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Błąd formatu rozmiaru planszy", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            Toast.makeText(this, "Błąd pobierania rozmiaru planszy", Toast.LENGTH_SHORT).show()
-        }
+        // Launch Lab03Activity with selected board dimensions
+        val intent = Intent(this, Lab03Activity::class.java)
+        val size: IntArray = intArrayOf(rows, columns)
+        intent.putExtra("size", size)
+        startActivity(intent)
     }
 }
