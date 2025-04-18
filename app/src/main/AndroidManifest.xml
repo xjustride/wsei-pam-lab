@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+
     <application
+        android:name="pl.wsei.pam.lab06.TodoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,26 +18,31 @@
         android:theme="@style/Theme.Lab01"
         tools:targetApi="31">
         <activity
+            android:name="pl.wsei.pam.lab06.Lab06Activity"
+            android:exported="false" />
+        <activity
             android:name="pl.wsei.pam.lab03.Lab03Activity"
-            android:exported="false" />
-        <activity
-            android:name=".activity_lab02"
-            android:exported="false" />
-        <activity
-            android:name=".Lab01Activity"
             android:exported="false" />
         <activity
             android:name="pl.wsei.pam.lab02.Lab02Activity"
             android:exported="false" />
         <activity
-            android:name="pl.wsei.pam.MainActivity"
+            android:name=".Lab01Activity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name="pl.wsei.pam.lab06.ui.receiver.NotificationBroadcastReceiver"
+            android:enabled="true"/>
+
     </application>
 
 </manifest>

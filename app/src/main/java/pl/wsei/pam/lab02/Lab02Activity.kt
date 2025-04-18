@@ -4,38 +4,45 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import pl.wsei.pam.lab01.R
 import pl.wsei.pam.lab03.Lab03Activity
 
 class Lab02Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_lab02)
-
-        // Find all buttons and set the click listener
-        val buttons = listOf(
-            findViewById<Button>(R.id.main_6_6_board),
-            findViewById<Button>(R.id.main_4_4_board),
-            findViewById<Button>(R.id.main_4_6_board),
-            findViewById<Button>(R.id.main_6_4_board)
-        )
-
-        buttons.forEach { button ->
-            button.setOnClickListener { v -> onBoardSizeSelected(v) }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
     }
 
-    private fun onBoardSizeSelected(v: View) {
-        val tag: String? = v.tag as String?
-        val tokens: List<String>? = tag?.split(" ")
-        val rows = tokens?.get(0)?.toInt() ?: 3
-        val columns = tokens?.get(1)?.toInt() ?: 3
-
-        // Launch Lab03Activity with selected board dimensions
+    fun onBoardSizeButtonClicked(v: View) {
+        val buttonView: Button = v as Button
         val intent = Intent(this, Lab03Activity::class.java)
-        val size: IntArray = intArrayOf(rows, columns)
-        intent.putExtra("size", size)
+
+        val buttonText = buttonView.text.toString()
+
+        val parts = buttonText.split(" x ")
+
+        if (parts.size == 2) {
+            val rows = parts[0].toInt()
+            val columns = parts[1].toInt()
+
+            intent.putExtra("rows", rows)
+            intent.putExtra("columns", columns)
+        } else {
+            intent.putExtra("rows", 3)
+            intent.putExtra("columns", 3)
+        }
+
         startActivity(intent)
     }
 }
